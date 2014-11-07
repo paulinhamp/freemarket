@@ -5,21 +5,25 @@
  */
 package br.ufal.ic.p3.freemarket.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
 /**
  *
  * @author paulinha
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class User {
+@Data
+@Entity
+@Table(name = "T_USER")
+public class User implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String firstname;
@@ -31,5 +35,18 @@ public class User {
 
     private String login;
     private String password;
+
+    public User() {
+    }
+
+    public User(String firstname, String lastname, String email, String homePhone, String cellPhone, String login, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.homePhone = homePhone;
+        this.cellPhone = cellPhone;
+        this.login = login;
+        this.password = password;
+    }
 
 }

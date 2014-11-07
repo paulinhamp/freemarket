@@ -3,32 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.ufal.ic.p3.freemarket.model;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  *
  * @author paulinha
  */
-
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class Product {
-    
+@Entity
+@Table(name = "T_PRODUCT")
+public class Product implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     private String name;
     private String description;
     private Float price;
     private int quantity;
-    
+
+    @ManyToOne
     private User owner;
-    
+
+    public Product() {
+    }
+
 }
