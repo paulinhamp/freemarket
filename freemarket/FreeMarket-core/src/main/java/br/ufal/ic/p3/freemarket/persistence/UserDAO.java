@@ -16,52 +16,64 @@ import org.hibernate.Transaction;
  *
  * @author paulinha
  */
-public class UserDAO implements IDAO<User> {
+public class UserDAO extends AbstractDAO<User> {
+
+    private static final UserDAO USER_DAO = new UserDAO();
+
+    public static UserDAO get() {
+        return USER_DAO;
+    }
 
     @Override
     public void save(User entity) {
-        Session session = HibernateUtil.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(entity);
-        transaction.commit();
-        session.close();
+        super.save(entity);
     }
 
     @Override
     public void update(User entity) {
-        Session session = HibernateUtil.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.update(entity);
-        transaction.commit();
-        session.close();
+        super.update(entity);
     }
 
     @Override
     public void delete(User entity) {
+        List<Product> products = ProductDAO.get().findByOwner(entity.getId());
+        for (Product product : products) {
+            ProductDAO.get().delete(product);
+        }
+        Session session = HibernateUtil.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        entity.setActive(false);
+        session.update(entity);
+        transaction.commit();
+        session.close();
 
     }
 
     @Override
-    public List<User> findAll() {
-        String hql = "SELECT * FROM T_USER;";
+    public List<User> getAll() {
+        String hql = "SELECT * FROM T_USER where active = true;";
         Session session = HibernateUtil.openSession();
         Query query = session.createQuery(hql);
         List<User> users = query.list();
         session.close();
-
         return users;
     }
 
     @Override
-    public User findById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User findById(long id) {
+        String hql = "FROM T_USER where id = :id AND active = true";
+        Session session = HibernateUtil.openSession();
+        Query query = session.createQuery(hql).setParameter("id", id);
+        User user = (User) query.uniqueResult();
+        session.close();
+        return user;
     }
-
+    
     public static void main(String[] args) {
-        HibernateUtil.getSessionFactory();
+       HibernateUtil.getSessionFactory();
         User user = new User("Ana", "Paula", "ana@mail.com", "87878", "9999", "anna", "123");
-        UserDAO dao = new UserDAO();
-        dao.save(user);
+        UserDAO.get().save(user);
     }
 
 }

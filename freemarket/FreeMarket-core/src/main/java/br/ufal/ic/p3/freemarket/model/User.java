@@ -35,6 +35,8 @@ public class User implements Serializable {
 
     private String login;
     private String password;
+    
+    private boolean active = true;
 
     public User() {
     }

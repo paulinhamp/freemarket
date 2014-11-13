@@ -33,6 +33,8 @@ public class Product implements Serializable {
     private String description;
     private Float price;
     private int quantity;
+    
+    private boolean active = true;
 
     @ManyToOne
     private User owner;

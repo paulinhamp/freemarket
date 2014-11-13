@@ -84,5 +84,10 @@
             <version>SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+            <version>4.3.7.Final</version>
+        </dependency>
     </dependencies>
 </project>
