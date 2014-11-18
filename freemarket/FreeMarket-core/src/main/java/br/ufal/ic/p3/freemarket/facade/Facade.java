@@ -6,7 +6,6 @@
 package br.ufal.ic.p3.freemarket.facade;
 
 import br.ufal.ic.p3.freemarket.model.User;
-import br.ufal.ic.p3.freemarket.persistence.HibernateUtil;
 import br.ufal.ic.p3.freemarket.persistence.UserDAO;
 
 /**
@@ -19,11 +18,6 @@ public class Facade {
             String homePhone, String cellPhone, String login, String password) {
         User user = new User(firstname, lastname, email, homePhone, cellPhone, login, password);
         UserDAO.get().save(user);
-    }
-
-    public static void main(String[] args) {
-        Facade facade = new Facade();
-        facade.createUser("Ana", "Paula", "ana@paula.com", "888", "999", "ana", "123");
     }
     
 }
